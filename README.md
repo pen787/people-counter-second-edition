@@ -14,5 +14,5 @@ Secret varibles access by.
 #include <secrets.cpp>
 ```
 
-(old version)[https://github.com/pen787/250614-123010-esp12e]
-(website)[https://github.com/pen787/people-counter-app]
+[old version](https://github.com/pen787/250614-123010-esp12e)
+[website](https://github.com/pen787/people-counter-app)
