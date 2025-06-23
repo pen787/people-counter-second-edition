@@ -11,5 +11,5 @@ void setup() {
 void loop() {
   sensorService.loop();
 
-  delay(100);
+  // delay(100);
 }
