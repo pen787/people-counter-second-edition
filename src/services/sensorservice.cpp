@@ -5,9 +5,6 @@
 
 const ulong MAXTIME = 500;
 
-
-SensorService::SensorService() {}
-
 void SensorService::startup()
 {
 	pinMode(FIRSTSENSOR, INPUT);

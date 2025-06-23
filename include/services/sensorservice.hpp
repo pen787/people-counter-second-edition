@@ -5,8 +5,6 @@
 
 class SensorService {
 public:
-    SensorService();
-
     void startup();
     void loop();
 
