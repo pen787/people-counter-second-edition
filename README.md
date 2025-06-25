@@ -8,11 +8,12 @@ Better version of old counter
 - [-] Firebase
   - [X] Firestore.
   - [ ] Realtime database.
-- [ ] Data Manager.
-- [ ] Saving Manager.
+- [X] Data Manager.
+- [ ] Saving Manager. (Won't Implement.)
 
 ### Note :
-Secret varibles access by.
+Secret varibles access by. (Auto-Generated.)
+You can regenerate by re-save `platformio.ini`.
 ```cpp 
 #include <secrets.cpp>
 ```
