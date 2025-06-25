@@ -9,7 +9,7 @@ Better version of old counter
   - [X] Firestore.
   - [ ] Realtime database.
 - [X] Data Manager.
-- [ ] Saving Manager. (Won't Implement.)
+- [ ] ~~Saving Manager.~~ (Won't Implement)
 
 ### Note :
 Secret varibles access by. (Auto-Generated.)
