@@ -17,6 +17,8 @@ String TimeService::getCurrentISO() {
 
   char isoTime[30];
   strftime(isoTime, sizeof(isoTime), "%Y-%m-%dT%H:%M:%SZ", &currentTime);
+
+  Serial.println(isoTime);
   
   return String(isoTime);
 }

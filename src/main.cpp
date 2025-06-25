@@ -7,8 +7,10 @@
 #include "services/wifiservice.hpp"
 #include "services/timeservice.hpp"
 #include "services/firebaseservice.hpp"
+#include "services/dataservice.hpp"
 
 SensorService sensorService;
+DataService dataService;
 WifiService wifiService;
 TimeService timeService;
 FirebaseService firebaseService(wifiService, timeService);
@@ -16,15 +18,43 @@ FirebaseService firebaseService(wifiService, timeService);
 void OnEnter()
 {
   Serial.println("Person Enter");
+  dataService.addData(DATATYPE::current, 1);
+  dataService.addData(DATATYPE::day, 1);
+  dataService.addData(DATATYPE::week, 1);
+  dataService.addData(DATATYPE::month, 1);
+
+  dataService.printAll();
+
   firebaseService.appendData(true);
 }
 
 void OnExit()
 {
   Serial.println("Person Exit");
+  dataService.addData(DATATYPE::current, -1);
+
+  dataService.printAll();
+
   firebaseService.appendData(false);
 }
 
+void resetDay()
+{
+  enum DATATYPE t = day;
+  dataService.setData(t, 0);
+}
+
+void resetWeek()
+{
+  enum DATATYPE t = week;
+  dataService.setData(t, 0);
+}
+
+void resetMonth()
+{
+  enum DATATYPE t = month;
+  dataService.setData(t, 0);
+}
 
 void setup()
 {
@@ -36,6 +66,10 @@ void setup()
 
   sensorService.onTrigger.on("enter", OnEnter);
   sensorService.onTrigger.on("exit", OnExit);
+
+  timeService.onTime.on("day", resetDay);
+  timeService.onTime.on("week", resetWeek);
+  timeService.onTime.on("month", resetMonth);
 }
 
 void loop()

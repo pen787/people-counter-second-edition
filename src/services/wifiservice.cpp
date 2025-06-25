@@ -6,7 +6,7 @@ const char* password = "REPLACE_WITH_YOUR_PASSWORD";
 
 const char* ntpServer = "pool.ntp.org";
 // Thailand gmt +7
-const long  gmtOffset_sec = 25200;
+const long  gmtOffset_sec = 0;//25200;
 const int   daylightOffset_sec = 0;
 
 void WifiService::startup() {
