@@ -2,11 +2,14 @@
 #define SENSOR_HPP
 #include "EventEmitter.hpp"
 #include "Arduino.h"
+#include <FirebaseClient.h>
 
 class SensorService {
 public:
     void startup();
     void loop();
+
+    // extern user_ath
 
     EventEmitter<> onTrigger;
 

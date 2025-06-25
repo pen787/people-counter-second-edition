@@ -12,6 +12,15 @@ tm getTime()
   return timeinfo;
 }
 
+String TimeService::getCurrentISO() {
+  struct tm currentTime = getTime();
+
+  char isoTime[30];
+  strftime(isoTime, sizeof(isoTime), "%Y-%m-%dT%H:%M:%SZ", &currentTime);
+  
+  return String(isoTime);
+}
+
 void TimeService::startup()
 {
   struct tm timeinfo = getTime();
@@ -21,7 +30,6 @@ void TimeService::startup()
   _lastDayOfWeek = timeinfo.tm_wday;
   _lastupdate = millis();
 }
-
 void TimeService::loop()
 {
   if (millis() - _lastupdate >= _updateTime)

@@ -10,6 +10,8 @@ public:
   void startup();
   void loop();
 
+  String getCurrentISO();
+
   EventEmitter<> onTime;
 
 private:

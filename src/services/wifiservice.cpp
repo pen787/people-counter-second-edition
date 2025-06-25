@@ -20,8 +20,16 @@ void WifiService::startup() {
   Serial.println(WiFi.localIP());
   Serial.print("RRSI: ");
   Serial.println(WiFi.RSSI());
+  
+  _ssl_client.setInsecure();
+  // ssl_client.setConnectionTimeout(1000);
+  _ssl_client.setHandshakeTimeout(5);
 
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+}
+
+WiFiClientSecure* WifiService::getSSL_Client() {
+  return &_ssl_client;
 }
 
 void WifiService::loop() {

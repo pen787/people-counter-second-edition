@@ -4,7 +4,10 @@ Better version of old counter
 ### TODO:
 - [X] Counter.
 - [X] Time.
-- [ ] Server.
+- [X] Server.
+- [-] Firebase
+  - [X] Firestore.
+  - [ ] Realtime database.
 - [ ] Data Manager.
 - [ ] Saving Manager.
 
