@@ -43,8 +43,8 @@ void FirebaseService::create_document_async(Document<Values::Value> &doc, const 
   Serial.println("Creating a document... ");
 
   // Async call with callback function.
-  // _Docs.createDocument(_aClient, Firestore::Parent(PROJECT_ID), documentPath, DocumentMask(), doc, processData, "createDocumentTask");
-  _Docs.createDocument(_aClient, Firestore::Parent(PROJECT_ID), documentPath, DocumentMask(), doc);
+  _Docs.createDocument(_aClient, Firestore::Parent(PROJECT_ID), documentPath, DocumentMask(), doc, processData, "createDocumentTask");
+  // _Docs.createDocument(_aClient, Firestore::Parent(PROJECT_ID), documentPath, DocumentMask(), doc);
 }
 
 void FirebaseService::appendData(bool enter)
@@ -66,11 +66,41 @@ void FirebaseService::appendData(bool enter)
   // boolean
   Values::BooleanValue bolV(enter);
 
-
   Document<Values::Value> doc("createAt", Values::Value(createAtValue));
   doc.add("enter", Values::Value(bolV));
 
   create_document_async(doc, documentPath);
+}
+
+void FirebaseService::setRealtimeData(int c, int d, int w, int m)
+{
+  object_t json, obj1, obj2, obj3, obj4, obj5;
+  JsonWriter writer;
+
+  writer.create(obj1, "current", c);
+  writer.create(obj2, "day", d);
+  writer.create(obj3, "week", w);
+  writer.create(obj4, "month", m);
+
+  writer.join(obj5, 4 /* no. of object_t (s) to join */, obj1, obj2, obj3, obj4);
+  writer.create(json, "data", obj5);
+
+  // To print object_t
+  // Serial.println(json);
+  Serial.println("Setting the JSON value... ");
+  _RTDatabase.set<object_t>(_aClient, "/entries/", json, processData, "setJsonTask");
+}
+
+void FirebaseService::updateRealtimeData(String d, int a)
+{
+  object_t json;
+  JsonWriter writer;
+  writer.create(json, d, a);
+
+  // String atLoc = "/entries/data";
+  // atLoc += d;
+
+  _RTDatabase.update(_aClient, "/entries/data", json, processData, "updateTask");
 }
 
 void FirebaseService::startup()

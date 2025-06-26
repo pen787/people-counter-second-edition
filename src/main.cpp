@@ -25,6 +25,11 @@ void OnEnter()
 
   dataService.printAll();
 
+  firebaseService.updateRealtimeData("current", dataService.getData(DATATYPE::current));
+  // firebaseService.updateRealtimeData("day", dataService.getData(DATATYPE::day));
+  // firebaseService.updateRealtimeData("week", dataService.getData(DATATYPE::week));
+  // firebaseService.updateRealtimeData("month", dataService.getData(DATATYPE::month));
+
   firebaseService.appendData(true);
 }
 
@@ -32,6 +37,7 @@ void OnExit()
 {
   Serial.println("Person Exit");
   dataService.addData(DATATYPE::current, -1);
+  firebaseService.updateRealtimeData("current", dataService.getData(DATATYPE::current));
 
   dataService.printAll();
 
@@ -70,6 +76,8 @@ void setup()
   timeService.onTime.on("day", resetDay);
   timeService.onTime.on("week", resetWeek);
   timeService.onTime.on("month", resetMonth);
+
+  firebaseService.setRealtimeData(0, 0, 0, 0);
 }
 
 void loop()

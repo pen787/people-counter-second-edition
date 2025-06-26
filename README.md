@@ -10,6 +10,7 @@ Better version of old counter
   - [ ] Realtime database.
 - [X] Data Manager.
 - [ ] ~~Saving Manager.~~ (Won't Implement)
+- [ ] Multi-Thread Sensor
 
 ### Note :
 Secret varibles access by. (Auto-Generated.)
