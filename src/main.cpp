@@ -26,9 +26,9 @@ void OnEnter()
   dataService.printAll();
 
   firebaseService.updateRealtimeData("current", dataService.getData(DATATYPE::current));
-  // firebaseService.updateRealtimeData("day", dataService.getData(DATATYPE::day));
-  // firebaseService.updateRealtimeData("week", dataService.getData(DATATYPE::week));
-  // firebaseService.updateRealtimeData("month", dataService.getData(DATATYPE::month));
+  firebaseService.updateRealtimeData("day", dataService.getData(DATATYPE::day));
+  firebaseService.updateRealtimeData("week", dataService.getData(DATATYPE::week));
+  firebaseService.updateRealtimeData("month", dataService.getData(DATATYPE::month));
 
   firebaseService.appendData(true);
 }
