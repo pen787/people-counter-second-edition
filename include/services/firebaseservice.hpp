@@ -25,6 +25,8 @@ public:
     void appendData(bool enter);
     void setRealtimeData(int c, int d, int w, int m);
     void updateRealtimeData(String d, int a);
+
+    FirebaseApp& getApp();
 private:
     WifiService &_wifiservice;
     TimeService &_timeservice;

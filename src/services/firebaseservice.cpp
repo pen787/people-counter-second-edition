@@ -70,6 +70,7 @@ void FirebaseService::appendData(bool enter)
   doc.add("enter", Values::Value(bolV));
 
   create_document_async(doc, documentPath);
+  Serial.println("Done create document.");
 }
 
 void FirebaseService::setRealtimeData(int c, int d, int w, int m)
@@ -89,6 +90,11 @@ void FirebaseService::setRealtimeData(int c, int d, int w, int m)
   // Serial.println(json);
   Serial.println("Setting the JSON value... ");
   _RTDatabase.set<object_t>(_aClient, "/entries/", json, processData, "setJsonTask");
+  Serial.println("Done setting data!");
+}
+
+FirebaseApp& FirebaseService::getApp() {
+  return _app;
 }
 
 void FirebaseService::updateRealtimeData(String d, int a)
@@ -101,6 +107,7 @@ void FirebaseService::updateRealtimeData(String d, int a)
   // atLoc += d;
 
   _RTDatabase.update(_aClient, "/entries/data", json, processData, "updateTask");
+  Serial.println("Done update data!");
 }
 
 void FirebaseService::startup()

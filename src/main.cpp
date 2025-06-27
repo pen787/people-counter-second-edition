@@ -15,6 +15,54 @@ WifiService wifiService;
 TimeService timeService;
 FirebaseService firebaseService(wifiService, timeService);
 
+enum class FirebaseCommandType
+{
+  Update,
+  Append,
+  Set
+};
+
+struct FirebaseCommand
+{
+  FirebaseCommandType type;
+  String path;  // e.g. "current", "day", etc
+  int value;    // for update
+  bool isEnter; // for appendData
+};
+
+QueueHandle_t firebaseQueue;
+
+void firebaseTask(void *pvParameters)
+{
+  FirebaseApp app = firebaseService.getApp();
+  FirebaseCommand cmd;
+  while (true)
+  {
+    // app.loop(); // Keep auth alive
+    if (xQueueReceive(firebaseQueue, &cmd, portMAX_DELAY) == pdPASS)
+    {
+      if (app.isInitialized())
+      {
+        if (cmd.type == FirebaseCommandType::Update)
+        {
+          firebaseService.updateRealtimeData(cmd.path, cmd.value);
+        }
+        else if (cmd.type == FirebaseCommandType::Append)
+        {
+          firebaseService.appendData(cmd.isEnter);
+        }
+        else if (cmd.type == FirebaseCommandType::Set)
+        {
+          firebaseService.setRealtimeData(cmd.value, cmd.value, cmd.value, cmd.value);
+        }
+      } else {
+        Serial.println("App not ready yet!");
+      }
+    }
+    // vTaskDelay(10 / portTICK_PERIOD_MS); // Avoid tight loop
+  }
+}
+
 void OnEnter()
 {
   Serial.println("Person Enter");
@@ -25,12 +73,22 @@ void OnEnter()
 
   dataService.printAll();
 
-  firebaseService.updateRealtimeData("current", dataService.getData(DATATYPE::current));
-  firebaseService.updateRealtimeData("day", dataService.getData(DATATYPE::day));
-  firebaseService.updateRealtimeData("week", dataService.getData(DATATYPE::week));
-  firebaseService.updateRealtimeData("month", dataService.getData(DATATYPE::month));
+  FirebaseCommand cmd;
 
-  firebaseService.appendData(true);
+  cmd = {FirebaseCommandType::Update, "current", dataService.getData(DATATYPE::current), false};
+  xQueueSend(firebaseQueue, &cmd, 0);
+
+  cmd = {FirebaseCommandType::Update, "day", dataService.getData(DATATYPE::day), false};
+  xQueueSend(firebaseQueue, &cmd, 0);
+
+  cmd = {FirebaseCommandType::Update, "week", dataService.getData(DATATYPE::week), false};
+  xQueueSend(firebaseQueue, &cmd, 0);
+
+  cmd = {FirebaseCommandType::Update, "month", dataService.getData(DATATYPE::month), false};
+  xQueueSend(firebaseQueue, &cmd, 0);
+
+  cmd = {FirebaseCommandType::Append, "", 0, true};
+  xQueueSend(firebaseQueue, &cmd, 0);
 }
 
 void OnExit()
@@ -41,7 +99,13 @@ void OnExit()
 
   dataService.printAll();
 
-  firebaseService.appendData(false);
+  FirebaseCommand cmd;
+
+  cmd = {FirebaseCommandType::Update, "current", dataService.getData(DATATYPE::current), false};
+  xQueueSend(firebaseQueue, &cmd, 0);
+
+  cmd = {FirebaseCommandType::Append, "", 0, false};
+  xQueueSend(firebaseQueue, &cmd, 0);
 }
 
 void resetDay()
@@ -77,7 +141,12 @@ void setup()
   timeService.onTime.on("week", resetWeek);
   timeService.onTime.on("month", resetMonth);
 
-  firebaseService.setRealtimeData(0, 0, 0, 0);
+  firebaseQueue = xQueueCreate(60, sizeof(FirebaseCommand));
+  xTaskCreatePinnedToCore(firebaseTask, "FirebaseTask", 8192, NULL, 1, NULL, 1);
+
+  FirebaseCommand cmd;
+  cmd = {FirebaseCommandType::Set, "", 0, false};
+  xQueueSend(firebaseQueue, &cmd, 0);
 }
 
 void loop()
