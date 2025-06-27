@@ -15,11 +15,10 @@ For Windows, install the appropriate USB-to-UART driver for your ESP32 board:
 
 ### TODO:
 - [X] Counter.
-- [ ] Firebase
 - [X] Server.
-- [-] Firebase
+- [X] Firebase
   - [X] Firestore.
-  - [ ] Realtime database.
+  - [X] Realtime database.
 - [X] Data Manager.
 - [ ] ~~Saving Manager.~~ (Won't Implement)
 - [X] Multi-Thread Sensor
