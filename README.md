@@ -1,9 +1,21 @@
 # Counter V2 ESP32
-Better version of old counter
+An improved ESP32-based counter with enhanced features, better performance, and additional functionalities compared to the previous version.
+
+## Get Started:
+Clone the repository with submodules.
+```bash
+git clone --recurse-submodules -j8 https://github.com/pen787/counterv2.git
+```
+
+Recommend using VS Code with the [PlatformIO](https://platformio.org/) extension for development.
+
+For Windows, install the appropriate USB-to-UART driver for your ESP32 board:  
+- [CP210x driver (Silicon Labs)](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers) for most official ESP32 DevKit boards  
+- [CH340 driver (WCH)](https://www.wch.cn/downloads/CH341SER_ZIP.html) for boards using the CH340 chip
 
 ### TODO:
 - [X] Counter.
-- [X] Time.
+- [ ] Firebase
 - [X] Server.
 - [-] Firebase
   - [X] Firestore.
@@ -13,8 +25,9 @@ Better version of old counter
 - [X] Multi-Thread Sensor
 
 ### Note :
-Secret varibles access by. (Auto-Generated.)
-You can regenerate by re-save `platformio.ini`.
+Secret variables are accessed via an auto-generated header file.
+You can regenerate it by re-saving `platformio.ini`.
+Include it in your code as follows:
 ```cpp 
 #include <secrets.cpp>
 ```
